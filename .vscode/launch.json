@@ -1,0 +1,52 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js: Dev Server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "serverReadyAction": {
+        "pattern": "http://localhost:3000",
+        "uriFormat": "http://localhost:3000",
+        "action": "openExternally"
+      },
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "name": "Next.js: Full Build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run build",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "Tests: Vitest (all)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npx vitest run"
+    },
+    {
+      "name": "Tests: Vitest (watch)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npx vitest"
+    },
+    {
+      "name": "Tests: Playwright (e2e)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npx playwright test"
+    },
+    {
+      "name": "Prisma Studio",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npx prisma studio"
+    }
+  ]
+}

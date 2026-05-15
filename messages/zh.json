@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "title": "VORA",
+    "subtitle": "您富有同情心的心理健康伴侣",
+    "selectLanguage": "选择您的语言",
+    "startButton": "开始倾诉",
+    "privacy": "您的对话是私密和保密的",
+    "private": "100% 私密",
+    "multilingual": "10 种语言",
+    "expert": "专家指导",
+    "voiceOption": "语音或文字"
+  },
+  "chat": {
+    "welcome": "欢迎。我在这里倾听，不加评判。您在想什么？",
+    "inputPlaceholder": "在这里写下您的想法...",
+    "send": "发送",
+    "written": "书写",
+    "oral": "说话",
+    "voiceHint": "点击开始说话，再次点击停止",
+    "error": "我无法回复。请重试。"
+  },
+  "crisis": {
+    "title": "紧急支持可用",
+    "subtitle": "您不必独自面对这一切",
+    "helpline": "危机热线",
+    "call": "立即拨打",
+    "safe": "我很安全"
+  }
+}

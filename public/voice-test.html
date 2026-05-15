@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VORA — Voice Test</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+  .container { max-width: 500px; width: 100%; padding: 2rem; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  p { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.875rem; }
+  .card { background: #1e293b; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid #334155; }
+  .card h2 { font-size: 1rem; margin-bottom: 1rem; }
+  .status { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .status.idle { background: #334155; color: #94a3b8; }
+  .status.listening { background: #dc2626; color: white; animation: pulse 1.5s infinite; }
+  .status.done { background: #16a34a; color: white; }
+  .status.error { background: #d97706; color: white; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  button { padding: 0.75rem 1.5rem; border: none; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.primary { background: #6366f1; color: white; }
+  button.primary:hover:not(:disabled) { background: #4f46e5; }
+  button.secondary { background: #334155; color: #e2e8f0; }
+  button.secondary:hover:not(:disabled) { background: #475569; }
+  button.danger { background: #dc2626; color: white; }
+  button.danger:hover:not(:disabled) { background: #b91c1c; }
+  .result-box { background: #0f172a; border-radius: 0.75rem; padding: 1rem; min-height: 3rem; margin-top: 1rem; font-size: 0.875rem; white-space: pre-wrap; word-break: break-word; }
+  .lang-select { background: #334155; color: #e2e8f0; border: 1px solid #475569; border-radius: 0.5rem; padding: 0.5rem; font-size: 0.875rem; width: 100%; margin-bottom: 1rem; }
+  .flex { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .badge { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.7rem; background: #334155; color: #94a3b8; margin-top: 0.5rem; }
+  ul { list-style: none; margin-top: 0.5rem; }
+  ul li { padding: 0.25rem 0; font-size: 0.8rem; color: #94a3b8; }
+  ul li.ok { color: #16a34a; }
+  ul li.fail { color: #dc2626; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎤 VORA — Voice Test</h1>
+  <p>Test Web Speech API (Speech Recognition + Synthesis)</p>
+
+  <div class="card">
+    <h2>1. Browser Check</h2>
+    <ul id="browser-checks"></ul>
+  </div>
+
+  <div class="card">
+    <h2>2. Speech-to-Text (Microphone)</h2>
+    <select id="stt-lang" class="lang-select">
+      <option value="en-US">English (US)</option>
+      <option value="fr-FR">Français</option>
+      <option value="es-ES">Español</option>
+      <option value="de-DE">Deutsch</option>
+      <option value="it-IT">Italiano</option>
+      <option value="pt-BR">Português (BR)</option>
+      <option value="ar-SA">العربية</option>
+      <option value="zh-CN">中文</option>
+      <option value="ja-JP">日本語</option>
+      <option value="ru-RU">Русский</option>
+    </select>
+    <div>
+      <span id="stt-status" class="status idle">Idle</span>
+      <span class="badge" id="stt-support"></span>
+    </div>
+    <div class="result-box" id="stt-result">Click "Start" and speak...</div>
+    <div class="flex">
+      <button id="stt-start" class="primary">Start</button>
+      <button id="stt-stop" class="danger" disabled>Stop</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3. Text-to-Speech (Speaker)</h2>
+    <select id="tts-lang" class="lang-select">
+      <option value="en-US">English (US)</option>
+      <option value="fr-FR">Français</option>
+      <option value="es-ES">Español</option>
+      <option value="de-DE">Deutsch</option>
+      <option value="it-IT">Italiano</option>
+      <option value="pt-BR">Português (BR)</option>
+      <option value="ar-SA">العربية</option>
+      <option value="zh-CN">中文</option>
+      <option value="ja-JP">日本語</option>
+      <option value="ru-RU">Русский</option>
+    </select>
+    <textarea id="tts-text" rows="2" style="width:100%;background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:0.5rem;padding:0.75rem;font-size:0.875rem;resize:none;margin-bottom:0.5rem;">Hello, I'm here to listen. How are you feeling today?</textarea>
+    <div>
+      <span id="tts-status" class="status idle">Idle</span>
+      <span class="badge" id="tts-support"></span>
+    </div>
+    <div class="flex">
+      <button id="tts-speak" class="primary">Speak</button>
+      <button id="tts-stop" class="danger" disabled>Stop</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ Browser Checks ============
+const checks = document.getElementById('browser-checks');
+function addCheck(name, ok) {
+  const li = document.createElement('li');
+  li.className = ok ? 'ok' : 'fail';
+  li.textContent = `${ok ? '✓' : '✗'} ${name}`;
+  checks.appendChild(li);
+}
+
+const hasRecognition = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+const hasSynthesis = 'speechSynthesis' in window;
+const hasMediaDevices = !!navigator.mediaDevices?.getUserMedia;
+
+addCheck('SpeechRecognition API', hasRecognition);
+addCheck('SpeechSynthesis API', hasSynthesis);
+addCheck('MediaDevices (microphone)', hasMediaDevices);
+
+document.getElementById('stt-support').textContent = hasRecognition ? '✅ Supported' : '❌ Not supported';
+document.getElementById('tts-support').textContent = hasSynthesis ? '✅ Supported' : '❌ Not supported';
+
+// ============ Speech-to-Text ============
+let recognizer = null;
+const sttStatus = document.getElementById('stt-status');
+const sttResult = document.getElementById('stt-result');
+const sttStart = document.getElementById('stt-start');
+const sttStop = document.getElementById('stt-stop');
+const sttLang = document.getElementById('stt-lang');
+
+function updateSTTStatus(state) {
+  sttStatus.className = `status ${state}`;
+  sttStatus.textContent = state.charAt(0).toUpperCase() + state.slice(1);
+  sttStart.disabled = state === 'listening' || state === 'processing';
+  sttStop.disabled = state !== 'listening';
+}
+
+sttStart.onclick = () => {
+  if (!hasRecognition) { sttResult.textContent = '❌ Speech recognition not supported in this browser.'; return; }
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognizer = new SpeechRecognition();
+  recognizer.continuous = true;
+  recognizer.interimResults = true;
+  recognizer.lang = sttLang.value;
+
+  recognizer.onresult = (event) => {
+    let interim = '';
+    let final = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) final += transcript + ' ';
+      else interim += transcript;
+    }
+    sttResult.textContent = final + (interim ? `\n[interim: ${interim}]` : '');
+  };
+
+  recognizer.onerror = (event) => {
+    sttResult.textContent = `❌ Error: ${event.error}`;
+    if (event.error === 'not-allowed') sttResult.textContent = '❌ Microphone access denied. Check browser permissions.';
+    updateSTTStatus('error');
+  };
+
+  recognizer.onend = () => updateSTTStatus('idle');
+  recognizer.start();
+  updateSTTStatus('listening');
+  sttResult.textContent = '🎤 Listening...';
+};
+
+sttStop.onclick = () => {
+  recognizer?.stop();
+  recognizer = null;
+  updateSTTStatus('idle');
+};
+
+// ============ Text-to-Speech ============
+const ttsStatus = document.getElementById('tts-status');
+const ttsText = document.getElementById('tts-text');
+const ttsSpeak = document.getElementById('tts-speak');
+const ttsStop = document.getElementById('tts-stop');
+const ttsLang = document.getElementById('tts-lang');
+
+ttsSpeak.onclick = () => {
+  if (!hasSynthesis) { alert('Speech synthesis not supported in this browser.'); return; }
+  
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(ttsText.value || 'Hello');
+  utterance.lang = ttsLang.value;
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  utterance.onstart = () => {
+    ttsStatus.className = 'status speaking';
+    ttsStatus.textContent = 'Speaking';
+    ttsSpeak.disabled = true;
+    ttsStop.disabled = false;
+  };
+  utterance.onend = () => {
+    ttsStatus.className = 'status done';
+    ttsStatus.textContent = 'Done';
+    ttsSpeak.disabled = false;
+    ttsStop.disabled = true;
+  };
+  utterance.onerror = (e) => {
+    ttsStatus.className = 'status error';
+    ttsStatus.textContent = `Error: ${e.error}`;
+    ttsSpeak.disabled = false;
+    ttsStop.disabled = true;
+  };
+
+  window.speechSynthesis.speak(utterance);
+};
+
+ttsStop.onclick = () => {
+  window.speechSynthesis.cancel();
+  ttsStatus.className = 'status idle';
+  ttsStatus.textContent = 'Stopped';
+  ttsSpeak.disabled = false;
+  ttsStop.disabled = true;
+};
+</script>
+</body>
+</html>

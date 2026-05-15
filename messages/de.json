@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "title": "VORA",
+    "subtitle": "Ihr einfühlsamer Begleiter für psychische Gesundheit",
+    "selectLanguage": "Wählen Sie Ihre Sprache",
+    "startButton": "Gespräch beginnen",
+    "privacy": "Ihre Gespräche sind privat und vertraulich",
+    "private": "100% Privat",
+    "multilingual": "10 Sprachen",
+    "expert": "Fachkundige Beratung",
+    "voiceOption": "Sprache oder Text"
+  },
+  "chat": {
+    "welcome": "Willkommen. Ich bin hier, um zuzuhören, ohne zu urteilen. Was beschäftigt Sie?",
+    "inputPlaceholder": "Schreiben Sie Ihre Gedanken hier...",
+    "send": "Senden",
+    "written": "Schreiben",
+    "oral": "Sprechen",
+    "voiceHint": "Tippen zum Sprechen, erneut tippen zum Stoppen",
+    "error": "Ich habe Probleme zu antworten. Bitte versuchen Sie es erneut."
+  },
+  "crisis": {
+    "title": "Notfallunterstützung verfügbar",
+    "subtitle": "Sie müssen das nicht allein durchstehen",
+    "helpline": "Krisentelefon",
+    "call": "Jetzt anrufen",
+    "safe": "Mir geht es gut"
+  }
+}

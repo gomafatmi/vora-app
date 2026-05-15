@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "title": "VORA",
+    "subtitle": "思いやりのあるメンタルヘルスパートナー",
+    "selectLanguage": "言語を選択",
+    "startButton": "話し始める",
+    "privacy": "会話はプライベートで秘密厳守です",
+    "private": "100% プライベート",
+    "multilingual": "10言語",
+    "expert": "専門家のガイダンス",
+    "voiceOption": "音声またはテキスト"
+  },
+  "chat": {
+    "welcome": "ようこそ。私は判断せずに耳を傾けるためにここにいます。何が気になっていますか？",
+    "inputPlaceholder": "ここに考えを入力してください...",
+    "send": "送信",
+    "written": "書く",
+    "oral": "話す",
+    "voiceHint": "タップして話す、もう一度タップして停止",
+    "error": "応答に問題が発生しました。もう一度お試しください。"
+  },
+  "crisis": {
+    "title": "緊急サポートがあります",
+    "subtitle": "一人で抱え込まないでください",
+    "helpline": "危機ホットライン",
+    "call": "今すぐ電話",
+    "safe": "大丈夫です"
+  }
+}

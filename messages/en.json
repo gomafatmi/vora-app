@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "title": "VORA",
+    "subtitle": "Your compassionate mental health companion",
+    "selectLanguage": "Choose your language",
+    "startButton": "Start Talking",
+    "privacy": "Your conversations are private and confidential",
+    "private": "100% Private",
+    "multilingual": "10 Languages",
+    "expert": "Expert Guidance",
+    "voiceOption": "Voice or Text"
+  },
+  "chat": {
+    "welcome": "Welcome. I'm here to listen, without judgment. What's on your mind?",
+    "inputPlaceholder": "Type your thoughts here...",
+    "send": "Send",
+    "written": "Write",
+    "oral": "Speak",
+    "voiceHint": "Tap to speak, tap again to stop",
+    "error": "I'm having trouble responding. Please try again."
+  },
+  "crisis": {
+    "title": "Urgent Support Available",
+    "subtitle": "You don't have to go through this alone",
+    "helpline": "Crisis Helpline",
+    "call": "Call Now",
+    "safe": "I'm safe"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "prisma.prisma",
+    "ms-playwright.playwright",
+    "vivaxy.vscode-conventional-commits",
+    "gruntfuggly.todo-tree",
+    "github.vscode-github-actions"
+  ]
+}
