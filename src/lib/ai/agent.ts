@@ -55,6 +55,17 @@ Respond ONLY in valid JSON format, no markdown.`,
   ["human", "{input}"],
 ]);
 
+function detectTheme(input: string): string | null {
+  const i = input.toLowerCase();
+  if (i.includes("amour") || i.includes("aime") || i.includes("relation") || i.includes("couple") || i.includes("femme") || i.includes("homme") || i.includes("mari") || i.includes("fianc") || i.includes("petit ami") || i.includes("petite amie") || i.includes("romant") || i.includes("sentiment") || i.includes("déclarer") || i.includes("love") || i.includes("crush") || i.includes("cœur")) return "love";
+  if (i.includes("péché") || i.includes("pêché") || i.includes("regret") || i.includes("erreur") || i.includes("faute") || i.includes("culpabilité") || i.includes("coupable") || i.includes("remord") || i.includes("remords") || i.includes("honte") || i.includes("pardon") || i.includes("confess")) return "guilt";
+  if (i.includes("confiance") || i.includes("doute") || i.includes("hésite") || i.includes("hésitation") || i.includes("peur de") || i.includes("timide") || i.includes("trouble") || i.includes("incertain") || i.includes("indécis")) return "hesitation";
+  if (i.includes("confiance en soi") || i.includes("estime") || i.includes("manque de confiance") || i.includes("sûr de moi") || i.includes("sûre de moi")) return "confidence";
+  if (i.includes("dieu") || i.includes("religion") || i.includes("croyance") || i.includes("foi") || i.includes("spiritu") || i.includes("prier") || i.includes("prière")) return "spiritual";
+  if (i.includes("tromper") || i.includes("infidèle") || i.includes("infidélité") || i.includes("adultère")) return "deception";
+  return null;
+}
+
 function demoClassify(input: string) {
   const inputLower = input.toLowerCase();
   let domain: ProblemDomain = "unknown";
@@ -145,6 +156,18 @@ const demoResponses: Record<string, string[]> = {
   trauma: [
     "Trauma lives in the body, not just the mind. Please be gentle with yourself. If talking about it feels too overwhelming, we don't need to go there right now. **Grounding** can help: feel your feet on the floor, your back against the chair. You are here, in the present, and you are safe right now. Would you like to try a brief grounding exercise?",
   ],
+  love: [
+    "Love is one of the most beautiful and complex emotions we can experience. Tell me about this person — what is it about them that moves you? Remember that love, in all its forms, begins with loving yourself.",
+    "Matters of the heart can be both wonderful and confusing. Take your time to explore what you're truly feeling. Love teaches us as much about ourselves as it does about the other person. What makes you happiest about this situation?",
+  ],
+  guilt: [
+    "We all make mistakes — it's what makes us human. Guilt can be heavy, but it can also be a signal that something important is at stake. Have you been able to forgive yourself? Sometimes the path to peace begins with accepting our imperfections.",
+    "Regret is a difficult emotion, but it shows you have a heart and a conscience. Instead of judging yourself, ask: 'What has this experience taught me? How can I grow from this?' Every mistake is a disguised lesson.",
+  ],
+  hesitation: [
+    "Hesitation is natural when facing important decisions. It's a sign that you're thinking things through. Try writing down your options with their pros and cons — sometimes seeing them on paper makes the path clearer. What worries you most about this choice?",
+    "Doubt can be paralyzing, but it can also be a valuable guide. Is your hesitation coming from a lack of information, or fear of making the wrong choice? Remember: not choosing is also a choice.",
+  ],
   unknown: [
     "Thank you for being here and for starting this conversation. Sometimes the hardest part is just beginning. I'm here to listen without judgment. Can you tell me a little more about what brought you here today?",
   ],
@@ -184,8 +207,32 @@ const demoResponsesFr: Record<string, string[]> = {
   trauma: [
     "Le traumatisme vit dans le corps, pas seulement dans l'esprit. Sois doux avec toi-même. Si en parler te semble trop difficile, nous n'avons pas besoin d'y aller maintenant. **L'ancrage** peut aider : sens tes pieds sur le sol, ton dos contre la chaise. Tu es ici, dans le présent, et tu es en sécurité maintenant. Veux-tu essayer un bref exercice d'ancrage ?",
   ],
+  love: [
+    "L'amour est une des émotions les plus puissantes et complexes que l'on puisse ressentir. Parle-moi de cette personne — qu'est-ce qui fait battre ton cœur chez elle ? Explore ce sentiment, et souviens-toi que l'amour, sous toutes ses formes, commence par l'amour de soi.",
+    "Ah, les affaires de cœur ! C'est à la fois merveilleux et troublant, n'est-ce pas ? Prends ton temps pour explorer ce que tu ressens vraiment. L'amour nous apprend autant sur l'autre que sur nous-mêmes. Qu'est-ce qui te rend le plus heureux dans cette relation ? Et qu'est-ce qui t'inquiète ?",
+    "Les sentiments amoureux peuvent être déroutants. C'est normal de ne pas avoir toutes les réponses. Le cœur a ses raisons que la raison ignore. Ce qui compte, c'est d'être sincère avec toi-même et avec l'autre. Quel est ton plus grand espoir dans cette situation ?",
+  ],
+  guilt: [
+    "Nous faisons tous des erreurs — c'est ce qui fait de nous des humains. La culpabilité peut être lourde à porter, mais elle peut aussi être un signal que quelque chose d'important est en jeu. As-tu pu te pardonner pour cela ? Parfois, le chemin vers la paix intérieure commence par l'acceptation de notre imperfection.",
+    "Le regret est une émotion difficile, mais il montre que tu as un cœur et une conscience. Au lieu de te juger, demande-toi : 'Qu'est-ce que cette expérience m'a appris ? Comment puis-je grandir à partir de là ?' Chaque erreur est une leçon déguisée. Veux-tu en parler plus en détail ?",
+    "La honte et la culpabilité sont des émotions que nous portons souvent en silence. Mais tu n'es pas seul à les ressentir. Ce qui est important, ce n'est pas la faute commise, mais ce que tu choisis d'en faire ensuite. Le pardon commence par la bienveillance envers soi-même.",
+  ],
+  hesitation: [
+    "L'hésitation est naturelle face aux décisions importantes. C'est le signe que tu réfléchis, que tu pèses le pour et le contre. Une technique utile : écris sur une feuille les options qui s'offrent à toi avec leurs avantages et inconvénients. Parfois, mettre les choses à plat éclaire le chemin. Qu'est-ce qui te fait le plus peur dans ce choix ?",
+    "Le doute peut être paralysant, mais il peut aussi être un guide précieux. Est-ce que ton hésitation vient d'un manque d'information, ou d'une peur de te tromper ? Rappelle-toi : ne pas choisir est aussi un choix. Fais confiance à ton instinct, il sait souvent ce qui est bon pour toi.",
+  ],
+  confidence: [
+    "Le manque de confiance en soi est plus courant que tu ne le penses. Beaucoup de personnes doutent d'elles-mêmes en silence. Une première étape : note trois choses que tu as accomplies aujourd'hui, même petites. La confiance se construit pas à pas. Qu'est-ce qui te fait douter de toi en ce moment ?",
+    "La confiance en soi n'est pas innée — elle se construit. Et devine quoi ? Même les personnes qui semblent les plus confiantes ont des doutes. L'important n'est pas d'être parfait, mais d'avancer malgré ses peurs. Quelle est la plus petite action que tu pourrais poser aujourd'hui pour renforcer ta confiance ?",
+  ],
+  spiritual: [
+    "La spiritualité est une quête profondément personnelle. Que tu sois croyant ou non, ces questions touchent au sens de la vie et à notre place dans l'univers. Qu'est-ce qui t'amène sur ce chemin de réflexion en ce moment ?",
+    "La foi peut être une source immense de réconfort dans les moments difficiles. Parle-moi de ce qui pèse sur ton cœur — parfois, la prière ou la méditation peuvent apporter une paix que les mots ne peuvent décrire.",
+  ],
   unknown: [
     "Merci d'être ici et d'avoir entamé cette conversation. Parfois, le plus difficile est simplement de commencer. Je suis là pour t'écouter sans jugement. Peux-tu m'en dire un peu plus sur ce qui t'amène aujourd'hui ?",
+    "Je t'écoute. Prends tout le temps dont tu as besoin pour t'exprimer. Il n'y a pas de sujet trop petit ou trop grand. Raconte-moi ce qui se passe dans ta vie en ce moment.",
+    "Ce que tu ressens est important, même si tu n'arrives pas encore à mettre des mots précis dessus. Commence par le début, ou par ce qui te vient à l'esprit maintenant. Je suis là pour toi.",
   ],
 };
 
@@ -228,7 +275,14 @@ function demoResponse(input: string, domain: ProblemDomain, crisisLevel: string,
   }
 
   const responses = getLocaleResponses(locale);
-  const domainResponses = responses[domain] ?? responses.unknown!;
+  let theme = domain;
+  if (theme === "unknown") {
+    const detectedTheme = detectTheme(input);
+    if (detectedTheme && responses[detectedTheme]) {
+      theme = detectedTheme;
+    }
+  }
+  const domainResponses = responses[theme] ?? responses.unknown!;
   return domainResponses[Math.floor(Math.random() * domainResponses.length)]!;
 }
 
